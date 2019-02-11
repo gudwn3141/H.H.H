@@ -336,8 +336,8 @@ void write(int handState, KJoint joint){
       stIndex-=10;
       id.deleteCharAt(id.length()-1);
       text("",stIndex+255,80);
-      pw.deleteCharAt(id.length()-1);
-      text("",stIndex+255,125);
+      //pw.deleteCharAt(id.length()-1);
+      //text("",stIndex+255,125);
     }
   }else if(text.equals("number")){
     numberver = (numberver) ? false : true;
@@ -356,8 +356,8 @@ void write(int handState, KJoint joint){
       text(text,stIndex+255,80);
       id.append(text);
       
-      text(text,stIndex+255,125);
-      pw.append(text);
+      //text(text,stIndex+255,125);
+      //pw.append(text);
       
       stIndex+=10;
     }
