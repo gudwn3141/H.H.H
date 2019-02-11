@@ -13,6 +13,8 @@ int c=0;
 int d=0;
 float e=0;
 
+char [] firstType= {'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'}; 
+
 void setup() {
 
   size(600, 900);
@@ -135,16 +137,18 @@ void draw() {
       } else {
         rect(x, y, 55, 32.5);//////////////////each of typing
         fill(225, 50);
-        text("q", 27.5+2.5, 315);//good
-        text("w", 27.5+60, 317);
-        text("e", 27.5+120, 317);
-        /*text("r", , );
-         text("t", , );
-         text("y", , );
-         text("u", , );
-         text("i", , );
-         text("o", , );
-         text("p", , );  */
+        for (int i=0; i<10; i++) {
+          text(firstType[i], 27.5+2.5+60*i, 315+Yspeed);//good
+          /*  text('w', 27.5+60+2.5, 317+Yspeed);
+           text('e', 27.5+120+2.5, 317+Yspeed);
+           text('r', 27.5+180+2.5, 317+Yspeed);
+           text('t', 27.5+240+2.5, 317+Yspeed);
+           text('y', 27.5+300+2.5, 317+Yspeed);
+           text('u', 27.5+360+2.5, 317+Yspeed);
+           text('i', 27.5+420+2.5, 317+Yspeed);
+           text('o', 27.5+480+2.5, 317+Yspeed);
+           text('p', 27.5+540+2.5, 317+Yspeed);*/
+        }
       }
 
 
@@ -183,8 +187,10 @@ void mousePressed() {
   if ((225< mouseX && mouseX <415) && (80< mouseY && mouseY <160)) {
 
     Click=true;
-  } else {
+  } else if (Click==true && (0< mouseY && mouseY< 150) && ((0< mouseX && mouseX<180) || (420<mouseX && mouseX<600))) {
 
+    Click=false;
+  } else if (Click==true &&(180<mouseX&&mouseX<420) && (0<mouseY && mouseY<48)) {
     Click=false;
   }
 }
