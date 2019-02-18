@@ -283,7 +283,7 @@ void draw() {
       fill(col);
       stroke(col);
       //drawBody(joints);
-      drawHandState(joints[KinectPV2.JointType_HandRight]);
+      //drawHandState(joints[KinectPV2.JointType_HandRight]);
       drawHandState(joints[KinectPV2.JointType_HandLeft]);
       
       int passedTime= millis()- presentTime;
@@ -298,8 +298,9 @@ void draw() {
   restTime= totalTime- healthTime;
   //println("restTime = " +restTime);
   //println("healthtime = " +healthTime);
-  fill(255, 0, 0);
-  
+  textAlign(CORNER);
+
+  //fill(255, 0, 0);
   text(s,stIndex,80);
   //text(frameRate, 50, 50);
 }
@@ -540,6 +541,8 @@ void write(KJoint joint){
   else if(202<x && x<282 && 262.5<y && y<=300) text = "china";
   else if(302<x && x<482 && 262.5<y && y<=300) text = " ";
   else if(502 <x && x<598 && 262.5<y && y<=300) text = "return";
+  //fill(255,0,0);
+  //text("ok",420,80);
   if(text.equals("back")){
     if(stIndex>0){
       stIndex-=10;
@@ -559,11 +562,13 @@ void write(KJoint joint){
   }else if(text.equals("capslock")){
     
   }else {
-    if(stIndex+255>420){
+    if(stIndex>420){
       //limit count
     }else{
-      //fill(255,0,0);
+      
+      fill(255,0,0);
       //text(text,stIndex,80);
+      
       id.append(text);
       s = id.toString();
       
@@ -571,7 +576,7 @@ void write(KJoint joint){
       //text(text,stIndex+255,125);
       //pw.append(text);
       
-      stIndex+=10;
+      //stIndex+=10;
     }
   }
 }
