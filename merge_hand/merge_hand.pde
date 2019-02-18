@@ -33,9 +33,10 @@ char [] firstType= {'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'};
 //handstate
 
 StringBuffer id = new StringBuffer();
+String s = "";
 StringBuffer pw = new StringBuffer();
 //Stack<Float> st = new Stack<Float>();
-int stIndex = 0;
+int stIndex = 255;
 boolean handver = false;
 boolean numberver = false;
 String text = "";
@@ -54,7 +55,9 @@ int presentTime, totalTime, healthTime, restTime;
 
 void setup() {
 //draft_Ui_fix1
+
   size(600, 900, P3D);
+  
   myFont= loadFont("CalistoMT-48.vlw");
   myImage= loadImage("login1.JPG");
   Id= loadImage("id.png");
@@ -78,12 +81,14 @@ void setup() {
   kinect.enableSkeleton3DMap(true);
 
   kinect.init();
-  
+
   presentTime= millis();
+
+
 }
 
 void draw() {
-  image(kinect.getColorImage(), 0, 0);
+  image(kinect.getColorImage(), 0, 0 , 600 , 300);
   //draft_UI_fix1
   //background(0);
   textAlign(CENTER, CENTER);
@@ -174,7 +179,7 @@ void draw() {
       e=1.66;
     }
 
-    println("mouseX:"+mouseX+"mouseY"+mouseY);
+    //println("mouseX:"+mouseX+"mouseY"+mouseY);
     for (float x= 2.5+d; x<60*c; x=x+60*e) {
 
       fill(102, 120, 142, 80);
@@ -291,9 +296,11 @@ void draw() {
   totalTime= millis();
 
   restTime= totalTime- healthTime;
-  println("restTime = " +restTime);
+  //println("restTime = " +restTime);
   //println("healthtime = " +healthTime);
   fill(255, 0, 0);
+  
+  text(s,stIndex,80);
   //text(frameRate, 50, 50);
 }
 
@@ -307,7 +314,7 @@ void drawBody(KJoint[] joints) {
   float c1 = abs(dist(joints[9].getX(), joints[9].getY(), joints[9].getZ(), joints[10].getX(), joints[10].getY(), joints[10].getZ()));
   float cosa1 = (b1*b1+c1*c1-a1*a1)/(2*b1*c1);
   float degree1 = degrees(acos(cosa1));
-  println("Dumb-bell degree = " +degree1);
+  //println("Dumb-bell degree = " +degree1);
   popMatrix();
   text("Dumb-bell degree", 50, 30);
   text(degree1, 50, 50);
@@ -348,7 +355,7 @@ void drawBody(KJoint[] joints) {
 //  }
 
   //totalCount= (count1+count2)/2;
-  println("totalcount = " +totalCount);
+  //println("totalcount = " +totalCount);
   
   //////////////////// total health time
   if(degree1>0){
@@ -484,18 +491,18 @@ void drawHandState(KJoint joint) {
   //strokeWeight(5.0f + joint.getZ()*8);
   //point(joint.getX(), joint.getY(), joint.getZ());
   noStroke();
-  handState(joint.getState());
+  handState(joint.getState(), joint);
   pushMatrix();
   translate(joint.getX(), joint.getY(), joint.getZ());
-  print("x = " + joint.getX() + " " + joint.getY() + " " + joint.getZ());
-  print("\n");
+  //print("x = " + joint.getX() + " " + joint.getY() + " " + joint.getZ());
+  //print("\n");
   ellipse(0, 0, 70, 70);
   popMatrix();
 }
-void write(int handState, KJoint joint){
+void write(KJoint joint){
   float x=0;
   float y = 0;
-  if(handState == KinectPV2.HandState_Closed && handver == true){
+  if(handver == true){
     x = joint.getX();
     y = joint.getY();
     handver = false;
@@ -537,7 +544,7 @@ void write(int handState, KJoint joint){
     if(stIndex>0){
       stIndex-=10;
       id.deleteCharAt(id.length()-1);
-      text("",stIndex+255,80);
+      text("",stIndex,80);
       //pw.deleteCharAt(id.length()-1);
       //text("",stIndex+255,125);
     }
@@ -555,8 +562,11 @@ void write(int handState, KJoint joint){
     if(stIndex+255>420){
       //limit count
     }else{
-      text(text,stIndex+255,80);
+      //fill(255,0,0);
+      //text(text,stIndex,80);
       id.append(text);
+      s = id.toString();
+      
       
       //text(text,stIndex+255,125);
       //pw.append(text);
@@ -565,13 +575,15 @@ void write(int handState, KJoint joint){
     }
   }
 }
-void handState(int handState) {
+void handState(int handState, KJoint joint) {
   switch(handState) {
   case KinectPV2.HandState_Open:
     fill(0, 255, 0);
     break;
   case KinectPV2.HandState_Closed:
+    println("x = " + joint.getX() + " y = " + joint.getY() + " " + joint.getZ());
     handver = true;
+    write(joint);
     fill(255, 0, 0);
     break;
   case KinectPV2.HandState_Lasso:
