@@ -22,7 +22,7 @@ PImage running;
 float Yspeed;
 float Accelerate;
 boolean Click;
-boolean log_pw; //log, pw choice 
+
 int b=0;
 int c=0;
 int d=0;
@@ -33,12 +33,10 @@ char [] firstType= {'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'};
 //handstate
 
 StringBuffer id = new StringBuffer();
-String id_s = "";
-String pw_s = "";
+String s = "";
 StringBuffer pw = new StringBuffer();
 //Stack<Float> st = new Stack<Float>();
-int idIndex = 255;
-int pwIndex = 255;
+int stIndex = 255;
 boolean handopen = false;
 boolean handclose = false;
 boolean numberver = false;
@@ -56,6 +54,7 @@ boolean result = true;
 
 int presentTime, totalTime, healthTime, restTime;
 
+Menu login = new Menu();
 void setup() {
 //draft_Ui_fix1
 
@@ -97,6 +96,8 @@ void draw() {
   textAlign(CENTER, CENTER);
   textLeading(40);
   textFont(myFont, 28);
+  
+  
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////background
 
@@ -305,14 +306,10 @@ void draw() {
   
   textAlign(CORNER);
   if(handclose){
-    if(log_pw){
-      text(id_s,idIndex,height/5.5-height/11+Yspeed/6);
-    }else{
-      text(pw_s,idIndex,height/5.5-height/23+Yspeed/6);
-
+    text(s,stIndex,80);
     handclose = false;
     handopen = false;
-  }
+  }  
   //fill(255, 0, 0);
   //text(frameRate, 50, 50);
 }
@@ -556,20 +553,14 @@ void write(KJoint joint){
   //fill(255,0,0);
   //text("ok",420,80);
   if(text.equals("back")){
-    if(log_pw){
-      if(id.length() != 0){
-        //stIndex-=10;
-        id.deleteCharAt(id.length()-1);
-        //text("",idIndex,80);
-      }
-    }else{
-      if(pw.length() != 0 ){
-        pw.deleteCharAt(id.length()-1);
-      }
-      //text("",pwIndex+255,125);
+    if(stIndex>255){
+      //stIndex-=10;
+      id.deleteCharAt(id.length()-1);
+      //id.deleteCharAt(id.length()-1);
+      text("",stIndex,80);
+      //pw.deleteCharAt(id.length()-1);
+      //text("",stIndex+255,125);
     }
-      
-    
   }else if(text.equals("number")){
     numberver = (numberver) ? false : true;
   }else if(text.equals("language")){
@@ -581,24 +572,33 @@ void write(KJoint joint){
   }else if(text.equals("capslock")){
     
   }else {
-    if(log_pw){
-      if(id.length()>8){
-        //limit count
-      }else{
-        fill(255,0,0);
-        id.append(text);
-        id_s = id.toString();
-      }
+    if(stIndex>420){
+      //limit count
     }else{
-      if(pw.length()>8){
-       // limit count
-      }else{
-        fill(255,0,0);
-        pw.append(text);
-        id_s = id.toString();
+      
+      fill(255,0,0);
+      //text(text,stIndex,80);
+      
+      id.append(text);
+      s = id.toString();
+      
+      
+      //text(text,stIndex+255,125);
+      //pw.append(text);
+      
+      //stIndex+=10;
     }
-    
   }
+}
+void login(KJoint joint){
+  float x=0;
+  float y = 0;
+  
+  x = joint.getX();
+  y = joint.getY();
+  
+  if(192.8571428571428<x && x<407.1428571428572 && 207<y && y<243) login.setup();
+ 
 }
 void handState(int handState, KJoint joint) {
   switch(handState) {
@@ -607,15 +607,15 @@ void handState(int handState, KJoint joint) {
     fill(0, 255, 0);
     break;
   case KinectPV2.HandState_Closed:
+    boolean log_pw = false; // login or pw comfirm
     println("x = " + joint.getX() + " y = " + joint.getY() + " " + joint.getZ());
     
-      
     //pw x >225  x<415 y>
     //id
     if(handopen){
       handclose = true;
+      
     }
-    
     write(joint);
     fill(255, 0, 0);
     break;
@@ -628,35 +628,6 @@ void handState(int handState, KJoint joint) {
   }
 }
 
-void dbconnect(){
-  String user = "smarthealth";
-  String pass = "smarthealth";
-  String dbHost = "smarthealth.cmyoepxrxtwp.us-east-2.rds.amazonaws.com";
-  String database = "smarthealth";
-  msql = new MySQL(this, dbHost,database, user, pass);
-  if(msql.connect())
-  {
-    msql.query("SELECT id(*) FROM mirror");
-    
-    boolean log_overlap = false;
-    while(msql.next()){
-      String s = msql.getString("id");
-      if(s.equals(id.toString())){
-        //warning overlap
-        break;
-      }else{
-        msql.execute("INSERT INTO mirror(id, password, age) VALUES (\""+id.toString()+"\",\""+pw.toString()+"\");");
-
-      }
-    }
-    
-  }
-  else
-  {
-    println("FAIL");
-  }
-  
-}
 void mousePressed() {
 
   if ((225< mouseX && mouseX <415) && (80< mouseY && mouseY <160)) {
