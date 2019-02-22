@@ -37,7 +37,8 @@ String s = "";
 StringBuffer pw = new StringBuffer();
 //Stack<Float> st = new Stack<Float>();
 int stIndex = 255;
-boolean handver = false;
+boolean handopen = false;
+boolean handclose = false;
 boolean numberver = false;
 String text = "";
 
@@ -129,12 +130,13 @@ void draw() {
 
   fill(255, 120);
   textFont(myFont, 18);
-  text("Login", width/2, height/4+Yspeed/6);
+  text("Login", width/2, height/4+Yspeed/6); 
 
   tint(184, 202, 250, 200);
 
   image(Id, width/2-width/5.6, height/5.5-height/11+Yspeed/6, 30, 30);
   image(Password, width/2-width/5.5, height/5.5-height/23+Yspeed/6, 35, 35);
+  
   noTint();
 
 
@@ -298,10 +300,14 @@ void draw() {
   restTime= totalTime- healthTime;
   //println("restTime = " +restTime);
   //println("healthtime = " +healthTime);
+  
   textAlign(CORNER);
-
+  if(handclose){
+    text(s,stIndex,80);
+    handclose = false;
+    handopen = false;
+  }  
   //fill(255, 0, 0);
-  text(s,stIndex,80);
   //text(frameRate, 50, 50);
 }
 
@@ -503,11 +509,11 @@ void drawHandState(KJoint joint) {
 void write(KJoint joint){
   float x=0;
   float y = 0;
-  if(handver == true){
-    x = joint.getX();
-    y = joint.getY();
-    handver = false;
-  }
+  //if(handver == true){
+  x = joint.getX();
+  y = joint.getY();
+  //handver = false;
+  //}
   if(0<=x && x<60 && 150<=y && y<187.5) text = (numberver) ? "1" : "q";
   else if(60<x && x<120 && 150<y && y<187.5) text = (numberver) ? "2" : "w";
   else if(120<x && x<180 && 150<y && y<187.5) text = (numberver) ? "3" : "e";
@@ -544,9 +550,10 @@ void write(KJoint joint){
   //fill(255,0,0);
   //text("ok",420,80);
   if(text.equals("back")){
-    if(stIndex>0){
-      stIndex-=10;
+    if(stIndex>255){
+      //stIndex-=10;
       id.deleteCharAt(id.length()-1);
+      //id.deleteCharAt(id.length()-1);
       text("",stIndex,80);
       //pw.deleteCharAt(id.length()-1);
       //text("",stIndex+255,125);
@@ -583,11 +590,19 @@ void write(KJoint joint){
 void handState(int handState, KJoint joint) {
   switch(handState) {
   case KinectPV2.HandState_Open:
+    handopen = true;
     fill(0, 255, 0);
     break;
   case KinectPV2.HandState_Closed:
+    boolean log_pw = false; // login or pw comfirm
     println("x = " + joint.getX() + " y = " + joint.getY() + " " + joint.getZ());
-    handver = true;
+    
+    //pw x >225  x<415 y>
+    //id
+    if(handopen){
+      handclose = true;
+      
+    }
     write(joint);
     fill(255, 0, 0);
     break;
