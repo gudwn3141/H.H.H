@@ -22,7 +22,7 @@ PImage running;
 float Yspeed;
 float Accelerate;
 boolean Click;
-
+boolean log_pw; //log, pw choice 
 int b=0;
 int c=0;
 int d=0;
@@ -33,10 +33,12 @@ char [] firstType= {'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'};
 //handstate
 
 StringBuffer id = new StringBuffer();
-String s = "";
+String id_s = "";
+String pw_s = "";
 StringBuffer pw = new StringBuffer();
 //Stack<Float> st = new Stack<Float>();
-int stIndex = 255;
+int idIndex = 255;
+int pwIndex = 255;
 boolean handopen = false;
 boolean handclose = false;
 boolean numberver = false;
@@ -303,10 +305,14 @@ void draw() {
   
   textAlign(CORNER);
   if(handclose){
-    text(s,stIndex,80);
+    if(log_pw){
+      text(id_s,idIndex,height/5.5-height/11+Yspeed/6);
+    }else{
+      text(pw_s,idIndex,height/5.5-height/23+Yspeed/6);
+
     handclose = false;
     handopen = false;
-  }  
+  }
   //fill(255, 0, 0);
   //text(frameRate, 50, 50);
 }
@@ -550,14 +556,20 @@ void write(KJoint joint){
   //fill(255,0,0);
   //text("ok",420,80);
   if(text.equals("back")){
-    if(stIndex>255){
-      //stIndex-=10;
-      id.deleteCharAt(id.length()-1);
-      //id.deleteCharAt(id.length()-1);
-      text("",stIndex,80);
-      //pw.deleteCharAt(id.length()-1);
-      //text("",stIndex+255,125);
+    if(log_pw){
+      if(id.length() != 0){
+        //stIndex-=10;
+        id.deleteCharAt(id.length()-1);
+        //text("",idIndex,80);
+      }
+    }else{
+      if(pw.length() != 0 ){
+        pw.deleteCharAt(id.length()-1);
+      }
+      //text("",pwIndex+255,125);
     }
+      
+    
   }else if(text.equals("number")){
     numberver = (numberver) ? false : true;
   }else if(text.equals("language")){
@@ -569,22 +581,23 @@ void write(KJoint joint){
   }else if(text.equals("capslock")){
     
   }else {
-    if(stIndex>420){
-      //limit count
+    if(log_pw){
+      if(id.length()>8){
+        //limit count
+      }else{
+        fill(255,0,0);
+        id.append(text);
+        id_s = id.toString();
+      }
     }else{
-      
-      fill(255,0,0);
-      //text(text,stIndex,80);
-      
-      id.append(text);
-      s = id.toString();
-      
-      
-      //text(text,stIndex+255,125);
-      //pw.append(text);
-      
-      //stIndex+=10;
+      if(pw.length()>8){
+       // limit count
+      }else{
+        fill(255,0,0);
+        pw.append(text);
+        id_s = id.toString();
     }
+    
   }
 }
 void handState(int handState, KJoint joint) {
@@ -594,15 +607,15 @@ void handState(int handState, KJoint joint) {
     fill(0, 255, 0);
     break;
   case KinectPV2.HandState_Closed:
-    boolean log_pw = false; // login or pw comfirm
     println("x = " + joint.getX() + " y = " + joint.getY() + " " + joint.getZ());
     
+      
     //pw x >225  x<415 y>
     //id
     if(handopen){
       handclose = true;
-      
     }
+    
     write(joint);
     fill(255, 0, 0);
     break;
