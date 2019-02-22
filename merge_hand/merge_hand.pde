@@ -55,7 +55,7 @@ int totalCount=0;
 boolean result = true;
 
 int presentTime, totalTime, healthTime, restTime;
-
+Menu login = new Menu();
 void setup() {
 //draft_Ui_fix1
 
@@ -599,6 +599,16 @@ void write(KJoint joint){
     }
     
   }
+}
+void login(KJoint joint){
+  float x=0;
+  float y = 0;
+
+  x = joint.getX();
+  y = joint.getY();
+
+  if(192.8571428571428<x && x<407.1428571428572 && 207<y && y<243) login.setup();
+
 }
 void handState(int handState, KJoint joint) {
   switch(handState) {
