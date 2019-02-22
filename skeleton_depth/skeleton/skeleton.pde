@@ -38,7 +38,7 @@ void draw() {
       color col  = skeleton.getIndexColor();
       fill(col);
       stroke(col);
-      drawBody(joints);
+      //drawBody(joints);
       
       
       
@@ -54,16 +54,16 @@ void draw() {
 
 //DRAW BODY
 void drawBody(KJoint[] joints) {
-  pushMatrix();
-  translate(joints[9].getX(), joints[9].getY(), joints[9].getZ());
-  float a = abs(dist(joints[10].getX(), joints[10].getY(),joints[10].getZ(), joints[8].getX(), joints[8].getY(),joints[8].getZ()));
-  float b = abs(dist(joints[8].getX(), joints[8].getY(),joints[8].getZ(), joints[9].getX(), joints[9].getY(), joints[9].getZ()));
-  float c = abs(dist(joints[9].getX(), joints[9].getY(), joints[9].getZ(), joints[10].getX(), joints[10].getY(),joints[10].getZ()));
-  float cosa = (b*b+c*c-a*a)/(2*b*c);
-  float degree = degrees(acos(cosa));
-  println("degree = " +degree);
-  popMatrix();
-  text(degree, 50, 50);
+  //pushMatrix();
+  //translate(joints[9].getX(), joints[9].getY(), joints[9].getZ());
+  //float a = abs(dist(joints[10].getX(), joints[10].getY(),joints[10].getZ(), joints[8].getX(), joints[8].getY(),joints[8].getZ()));
+  //float b = abs(dist(joints[8].getX(), joints[8].getY(),joints[8].getZ(), joints[9].getX(), joints[9].getY(), joints[9].getZ()));
+  //float c = abs(dist(joints[9].getX(), joints[9].getY(), joints[9].getZ(), joints[10].getX(), joints[10].getY(),joints[10].getZ()));
+  //float cosa = (b*b+c*c-a*a)/(2*b*c);
+  //float degree = degrees(acos(cosa));
+  //println("degree = " +degree);
+  //popMatrix();
+  //text(degree, 50, 50);
 
   drawBone(joints, KinectPV2.JointType_Head, KinectPV2.JointType_Neck);
   drawBone(joints, KinectPV2.JointType_Neck, KinectPV2.JointType_SpineShoulder);
@@ -148,6 +148,8 @@ void drawHandState(KJoint joint) {
   handState(joint.getState());
   pushMatrix();
   translate(joint.getX(), joint.getY(), joint.getZ());
+  print("x = " + joint.getX() + " " + joint.getY() + " " + joint.getZ());
+  print("\n");
   ellipse(0, 0, 70, 70);
   popMatrix();
 }
