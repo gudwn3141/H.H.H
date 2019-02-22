@@ -628,6 +628,35 @@ void handState(int handState, KJoint joint) {
   }
 }
 
+void dbconnect(){
+  String user = "smarthealth";
+  String pass = "smarthealth";
+  String dbHost = "smarthealth.cmyoepxrxtwp.us-east-2.rds.amazonaws.com";
+  String database = "smarthealth";
+  msql = new MySQL(this, dbHost,database, user, pass);
+  if(msql.connect())
+  {
+    msql.query("SELECT id(*) FROM mirror");
+    
+    boolean log_overlap = false;
+    while(msql.next()){
+      String s = msql.getString("id");
+      if(s.equals(id.toString())){
+        //warning overlap
+        break;
+      }else{
+        msql.execute("INSERT INTO mirror(id, password, age) VALUES (\""+id.toString()+"\",\""+pw.toString()+"\");");
+
+      }
+    }
+    
+  }
+  else
+  {
+    println("FAIL");
+  }
+  
+}
 void mousePressed() {
 
   if ((225< mouseX && mouseX <415) && (80< mouseY && mouseY <160)) {
