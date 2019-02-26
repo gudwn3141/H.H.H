@@ -615,7 +615,8 @@ void login(KJoint joint){
   y = joint.getY();
 
   if(192.8571428571428<x && x<407.1428571428572 && 207<y && y<243){
-    login.setup();
+    dbConnect();
+    
   }
 
 }
@@ -647,7 +648,7 @@ void handState(int handState, KJoint joint) {
   }
 }
 
-void dbconnect(){
+void dbConnect(){
   String user = "smarthealth";
   String pass = "smarthealth";
   String dbHost = "smarthealth.cmyoepxrxtwp.us-east-2.rds.amazonaws.com";
@@ -660,12 +661,14 @@ void dbconnect(){
     boolean log_overlap = false;
     while(msql.next()){
       String s = msql.getString("id");
-      if(s.equals(id.toString())){
+      if(s.equals(id.toString()) || id_s.length()<4){
         //warning overlap
-        showMessageDialog(null, "Duplicate ID", "Alert", ERROR_MESSAGE);
+        //showMessageDialog(null, "Duplicate ID", "Alert", ERROR_MESSAGE);
+        MsgBox("Duplicate ID", "ERROR");
         break;
       }else{
         msql.execute("INSERT INTO mirror(id, password) VALUES (\""+id.toString()+"\",\""+pw.toString()+"\");");
+        login.setup();
 
       }
     }
@@ -678,7 +681,14 @@ void dbconnect(){
   
 }
 void mousePressed() {
-  if(192.8571428571428<mouseX && mouseX<407.1428571428572 && 207<mouseY && mouseY<243) login.setup();
+  if(192.8571428571428<mouseX && mouseX<407.1428571428572 && 207<mouseY && mouseY<243) 
+   //if(id_s.length()<4){
+   //     //warning overlap
+   //     //showMessageDialog(null, "Duplicate ID", "Alert", ERROR_MESSAGE);
+   //     MsgBox("Duplicate ID", "ERROR");
+   //} else{
+     login.setup();
+   //}
   if ((225< mouseX && mouseX <415) && (80< mouseY && mouseY <160)) {
 
     Click=true;
@@ -688,4 +698,9 @@ void mousePressed() {
   } else if (Click==true &&(180<mouseX&&mouseX<420) && (0<mouseY && mouseY<48)) {
     Click=false;
   }
+}
+void MsgBox( String Msg, String Titel ){
+
+ javax.swing.JOptionPane.showMessageDialog ( null, Msg, Titel, javax.swing.JOptionPane.INFORMATION_MESSAGE  );
+ 
 }
