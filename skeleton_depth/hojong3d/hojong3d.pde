@@ -47,8 +47,8 @@ void setup() {
 void draw() {
   background(0);
 
-  //image(kinect.getColorImage(), 0, 0);
-  //image(kinect.getDepthMaskImage(), 0, 0);
+  image(kinect.getColorImage(), 0, 0);
+  image(kinect.getDepthMaskImage(), 0, 0);
 
   //translate the scene to the center 
   //pushMatrix();
@@ -273,9 +273,9 @@ void drawBone(KJoint[] joints, int jointType1, int jointType2) {
 }
 
 void drawHandState(KJoint joint) {
-  //handState(joint.getState());
-  //strokeWeight(5.0f + joint.getZ()*8);
-  //point(joint.getX(), joint.getY(), joint.getZ());
+  handState(joint.getState());
+  strokeWeight(5.0f + joint.getZ()*8);
+  point(joint.getX(), joint.getY(), joint.getZ());
   noStroke();
   handState(joint.getState());
   pushMatrix();
