@@ -14,6 +14,10 @@ import de.bezier.data.sql.*;
 import static javax.swing.JOptionPane.*;
 
 MySQL msql;
+//MsgBox msgBox = new MsgBox();
+//final int NORMAL = 0;  // normal state 
+//final int ALERT  = 1;  // alert / shows the msgbox
+//int state =  NORMAL;
 
 KinectPV2 kinect;
 //draft_Ui_fix1
@@ -589,6 +593,7 @@ void write(KJoint joint){
   }else {
     if(log_pw){
       if(id.length()>8){
+        
         //limit count
       }else{
         fill(255,0,0);
@@ -661,10 +666,10 @@ void dbConnect(){
     boolean log_overlap = false;
     while(msql.next()){
       String s = msql.getString("id");
-      if(s.equals(id.toString()) || id_s.length()<4){
+      if(s.equals(id.toString()) || id_s.length()<4 || pw_s.length()<4){
         //warning overlap
         //showMessageDialog(null, "Duplicate ID", "Alert", ERROR_MESSAGE);
-        MsgBox("Duplicate ID", "ERROR");
+        //MsgBox("Duplicate ID", "ERROR");
         break;
       }else{
         msql.execute("INSERT INTO mirror(id, password) VALUES (\""+id.toString()+"\",\""+pw.toString()+"\");");
@@ -682,13 +687,14 @@ void dbConnect(){
 }
 void mousePressed() {
   if(192.8571428571428<mouseX && mouseX<407.1428571428572 && 207<mouseY && mouseY<243) 
-   //if(id_s.length()<4){
-   //     //warning overlap
-   //     //showMessageDialog(null, "Duplicate ID", "Alert", ERROR_MESSAGE);
-   //     MsgBox("Duplicate ID", "ERROR");
-   //} else{
+   if(id_s.length()<4){
+        //warning overlap
+        //showMessageDialog(null, "Duplicate ID", "Alert", ERROR_MESSAGE);
+        //MsgBox("Duplicate ID", "ERROR");
+        //msgBox.msgBoxDisplay();
+   } else{
      login.setup();
-   //}
+   }
   if ((225< mouseX && mouseX <415) && (80< mouseY && mouseY <160)) {
 
     Click=true;
@@ -699,8 +705,99 @@ void mousePressed() {
     Click=false;
   }
 }
-void MsgBox( String Msg, String Titel ){
-
- javax.swing.JOptionPane.showMessageDialog ( null, Msg, Titel, javax.swing.JOptionPane.INFORMATION_MESSAGE  );
+//class MsgBox {
  
-}
+//  // the string to display 
+//  String alertText = ""; 
+ 
+//  int posX, posY;
+//  int msgboxW = 400, msgboxH = 200;
+//  final int innerBorder1=14; 
+ 
+//  // the ok box
+//  final int innerBorder2 = 8;
+//  final int okBoxAddY = 70;
+//  final int okBoxW = 60;
+//  final int okBoxH = 30;
+ 
+//  // no constructor here 
+ 
+//  void msgBox ( String a1 ) {
+//    // this activates the message box 
+//    alertText = a1;
+//    state = ALERT;
+//  } // method 
+ 
+//  void msgBoxDisplay() {
+ 
+//    // shows the msgbox (centered on the screen).
+//    // Call this from draw() always (at the end). 
+//    // It's active only when the state is ALERT.
+ 
+//    if (state==ALERT && !alertText.equals("")) {
+ 
+//      posX=width/2;
+//      posY=height/2;
+ 
+//      // this is a 2D HUD 
+//      camera();
+//      hint(DISABLE_DEPTH_TEST);
+//      noLights();
+ 
+//      // the outer box / msgbox 
+//      noStroke();
+//      fill(0);
+//      rectMode(CENTER);  // Set rectMode to CENTER
+//      rect (posX, posY, msgboxW, msgboxH);
+//      // a frame
+//      noFill();
+//      stroke(111);
+//      rect (posX, posY, msgboxW-innerBorder1, msgboxH-innerBorder1);
+ 
+//      // the X top left
+//      textSize(16);
+//      fill(255, 0, 0); // red
+//      textAlign(CENTER, CENTER);
+//      text ("X", posX+msgboxW/2-innerBorder1-4, posY-msgboxH/2+innerBorder1+4);
+ 
+//      // the variable text
+//      fill(244);
+//      textAlign(LEFT, CENTER);
+//      text (alertText, posX-msgboxW/2+innerBorder1, posY-msgboxH/2+2*innerBorder1); 
+ 
+//      // the OK box 
+//      noStroke();
+//      fill(88);
+//      rectMode(CENTER);  // Set rectMode to CENTER
+//      rect (posX, posY+okBoxAddY, okBoxW-innerBorder2, okBoxH-innerBorder2);
+//      noFill();
+//      stroke(111);
+//      rect (posX, posY+okBoxAddY, okBoxW, okBoxH);
+//      // the word OK 
+//      fill(255, 255, 255);
+//      textAlign(CENTER, CENTER);
+//      text ("OK", posX, posY+okBoxAddY); 
+ 
+//      // reset all parameters to defaults
+//      textAlign(LEFT, BASELINE);
+//      rectMode(CORNER);
+//      textSize(32);
+//      hint(ENABLE_DEPTH_TEST); // no HUD anymore
+//      lights();
+//    } // if
+//  } // method  
+ 
+//  // inputs 
+ 
+//    void keyPressedForMsgbox() {
+//    if (key==ESC||key==RETURN||key==ENTER||key==' ')
+//      state=NORMAL;
+//    // if (key==ESC)
+//    key=0;
+//  } // method
+ 
+//  void mousePressedForMsgbox() {
+//    state=NORMAL;
+//  } // method 
+//  //
+//} // class
