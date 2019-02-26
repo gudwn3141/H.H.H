@@ -10,6 +10,10 @@ Thomas Sanchez Lengeling.
 import java.util.*;
 import KinectPV2.KJoint;
 import KinectPV2.*;
+import de.bezier.data.sql.*;
+import static javax.swing.JOptionPane.*;
+
+MySQL msql;
 
 KinectPV2 kinect;
 //draft_Ui_fix1
@@ -27,6 +31,7 @@ int b=0;
 int c=0;
 int d=0;
 float e=0;
+
 
 char [] firstType= {'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'}; 
 
@@ -312,6 +317,7 @@ void draw() {
 
     handclose = false;
     handopen = false;
+    }
   }
   //fill(255, 0, 0);
   //text(frameRate, 50, 50);
@@ -596,9 +602,10 @@ void write(KJoint joint){
         fill(255,0,0);
         pw.append(text);
         id_s = id.toString();
+      }
     }
-    
-  }
+  }   
+  
 }
 void login(KJoint joint){
   float x=0;
@@ -607,7 +614,9 @@ void login(KJoint joint){
   x = joint.getX();
   y = joint.getY();
 
-  if(192.8571428571428<x && x<407.1428571428572 && 207<y && y<243) login.setup();
+  if(192.8571428571428<x && x<407.1428571428572 && 207<y && y<243){
+    login.setup();
+  }
 
 }
 void handState(int handState, KJoint joint) {
@@ -653,9 +662,10 @@ void dbconnect(){
       String s = msql.getString("id");
       if(s.equals(id.toString())){
         //warning overlap
+        showMessageDialog(null, "Duplicate ID", "Alert", ERROR_MESSAGE);
         break;
       }else{
-        msql.execute("INSERT INTO mirror(id, password, age) VALUES (\""+id.toString()+"\",\""+pw.toString()+"\");");
+        msql.execute("INSERT INTO mirror(id, password) VALUES (\""+id.toString()+"\",\""+pw.toString()+"\");");
 
       }
     }
@@ -668,7 +678,7 @@ void dbconnect(){
   
 }
 void mousePressed() {
-
+  if(192.8571428571428<mouseX && mouseX<407.1428571428572 && 207<mouseY && mouseY<243) login.setup();
   if ((225< mouseX && mouseX <415) && (80< mouseY && mouseY <160)) {
 
     Click=true;

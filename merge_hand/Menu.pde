@@ -1,9 +1,9 @@
 class Menu {
-<<<<<<< HEAD
+//<<<<<<< HEAD
 
-=======
+//=======
   
->>>>>>> b3a94f6bebf6fe50ef9e4d5d0077d7529ab165b2
+//>>>>>>> b3a94f6bebf6fe50ef9e4d5d0077d7529ab165b2
   void setup(){
   size(500,450);
 background(0);
@@ -57,9 +57,9 @@ textSize(30);
 fill(255,255,255);
 text("Info",150,340);
   }
-<<<<<<< HEAD
+//<<<<<<< HEAD
 
-=======
+//=======
   
->>>>>>> b3a94f6bebf6fe50ef9e4d5d0077d7529ab165b2
+//>>>>>>> b3a94f6bebf6fe50ef9e4d5d0077d7529ab165b2
 }
