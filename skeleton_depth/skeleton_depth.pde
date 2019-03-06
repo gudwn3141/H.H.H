@@ -12,7 +12,7 @@ import KinectPV2.*;
 KinectPV2 kinect;
 
 void setup() {
-  size(512, 424, P3D);
+  size(600, 900, P3D);
 
   kinect = new KinectPV2(this);
 
@@ -25,8 +25,9 @@ void setup() {
 
 void draw() {
   background(0);
+    image(kinect.getColorImage(), 0, 0);
 
-  image(kinect.getDepthMaskImage(), 0, 0);
+  //image(kinect.getDepthMaskImage(), 0, 0);
 
   //get the skeletons as an Arraylist of KSkeletons
   ArrayList<KSkeleton> skeletonArray =  kinect.getSkeletonDepthMap();

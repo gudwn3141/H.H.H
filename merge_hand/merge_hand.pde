@@ -261,13 +261,15 @@ void draw() {
   //scale(zVal);
   //rotateX(rotX);
   ArrayList<KSkeleton> skeletonArray =  kinect.getSkeletonColorMap();
+  //println(skeletonArray.size());
 
   ArrayList<KSkeleton> skeletonArray2 =  kinect.getSkeleton3d();
   for(int i = 0;i<skeletonArray2.size(); i++){
       KSkeleton skeleton = (KSkeleton) skeletonArray2.get(i);
-
+      //println(skeleton);
     if (skeleton.isTracked()) {
       KJoint[] joints = skeleton.getJoints();
+      println(joints[11].getX());
 
       //draw different color for each hand state
 
@@ -286,7 +288,7 @@ void draw() {
     KSkeleton skeleton = (KSkeleton) skeletonArray.get(i);
 
     if (skeleton.isTracked()) {
-      KJoint[] joints = skeleton.getJoints();
+      KJoint[] joints = skeleton.getJoints() ;
 
       //draw different color for each hand state
 
@@ -296,8 +298,9 @@ void draw() {
       fill(col);
       stroke(col);
       //drawBody(joints);
-      //drawHandState(joints[KinectPV2.JointType_HandRight]);
-      drawHandState(joints[KinectPV2.JointType_HandLeft]);
+      drawHandState(joints[KinectPV2.JointType_HandRight]);
+      //draw  dLeft]);
+      //println(joints[KinectPV2.JointType_HandLeft];
       
       int passedTime= millis()- presentTime;
       healthTime+= passedTime;
@@ -626,22 +629,24 @@ void login(KJoint joint){
 
 }
 void handState(int handState, KJoint joint) {
+  println("handstate = " +handState);
   switch(handState) {
   case KinectPV2.HandState_Open:
     handopen = true;
     fill(0, 255, 0);
     break;
   case KinectPV2.HandState_Closed:
-    println("x = " + joint.getX() + " y = " + joint.getY() + " " + joint.getZ());
+    //println("x = " + joint.getX() + " y = " + joint.getY() + " " + joint.getZ());
     
       
     //pw x >225  x<415 y>
     //id
     if(handopen){
       handclose = true;
+      
     }
     
-    write(joint);
+    //write(joint);
     fill(255, 0, 0);
     break;
   case KinectPV2.HandState_Lasso:
@@ -663,10 +668,10 @@ void dbConnect(){
   {
     msql.query("SELECT id(*) FROM mirror");
     
-    boolean log_overlap = false;
+
     while(msql.next()){
       String s = msql.getString("id");
-      if(s.equals(id.toString()) || id_s.length()<4 || pw_s.length()<4){
+      if(s.equals(id_s) || id_s.length()<4 || pw_s.length()<4){
         //warning overlap
         //showMessageDialog(null, "Duplicate ID", "Alert", ERROR_MESSAGE);
         //MsgBox("Duplicate ID", "ERROR");
