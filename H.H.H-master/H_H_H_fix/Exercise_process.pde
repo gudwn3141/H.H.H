@@ -24,16 +24,12 @@ class Exercise_process {
     presentTime= millis();
   }
 
-  void display() {
-
-    
-    image(kinect.getColorImage(), 0, 0, 600, 900);
-  }
 
   void time() {
     
     ///////// do get
   }
+
 
   void drawBody(KJoint[] joints) {
 

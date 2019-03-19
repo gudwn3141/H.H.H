@@ -12,7 +12,7 @@ import KinectPV2.KJoint;
 import KinectPV2.*;
 
 KinectPV2 kinect;
- 
+
 float zVal = 300;
 float rotX = PI;
 
@@ -28,27 +28,33 @@ int healthTime;
 int restTime;
 
 void setup() {
-  size(512, 424, P3D);
-
+  //size(display.width, 900, P3D);
+  fullScreen();
   kinect = new KinectPV2(this);
-  //kinect.enableColorImg(true);
-  kinect.enableDepthMaskImg(true);
+  //kinect.enableDepthMaskImg(true);
+  //kinect.enableSkeletonDepthMap(true);
+  //kinect.enableSkeleton3DMap(true);
 
-  kinect.enableSkeletonDepthMap(true);
+  //kinect.enableColorImg(true);
+
+  //kinect.enableDepthMaskImg(true);
+  //kinect.enableSkeletonDepthMap(true);
+  //kinect.enableSkeletonDepthMap(true);
 
   //enable 3d  with (x,y,z) position
   kinect.enableSkeleton3DMap(true);
+  kinect.enableDepthMaskImg(true);
 
   kinect.init();
-  
+
   presentTime= millis();
 }
 
 void draw() {
   background(0);
 
-  image(kinect.getColorImage(), 0, 0);
   image(kinect.getDepthMaskImage(), 0, 0);
+  image(kinect.getColorImage(), 0, 0);
 
   //translate the scene to the center 
   //pushMatrix();
@@ -75,7 +81,7 @@ void draw() {
       drawBody(joints);
       drawHandState(joints[KinectPV2.JointType_HandRight]);
       drawHandState(joints[KinectPV2.JointType_HandLeft]);
-      
+
       int passedTime= millis()- presentTime;
       healthTime+= passedTime;
     }
@@ -106,52 +112,49 @@ void drawBody(KJoint[] joints) {
   popMatrix();
   text("Dumb-bell degree", 50, 30);
   text(degree1, 50, 50);
-  
+
   ///////////// count
   previousAngle= currentAngle;
   currentAngle= degree1;
 
-  if(result==true){
-    if(degree1<40){
+  if (result==true) {
+    if (degree1<40) {
       result=false;
     }
   }
-  if(result==false){
-    if(degree1>160){
+  if (result==false) {
+    if (degree1>160) {
       totalCount++;
       result=true;
     }
   }
-//  if (currentAngle-previousAngle>0) {
+  //  if (currentAngle-previousAngle>0) {
 
-//    if (previousAngle>170) {
+  //    if (previousAngle>170) {
 
-//      count1++;
-//      currentAngle= 0;
-//      previousAngle= 0;
-//    }
-//  }
+  //      count1++;
+  //      currentAngle= 0;
+  //      previousAngle= 0;
+  //    }
+  //  }
 
-//  if (currentAngle-previousAngle<0) {
+  //  if (currentAngle-previousAngle<0) {
 
-//    if (previousAngle>20 && previousAngle<30) {
+  //    if (previousAngle>20 && previousAngle<30) {
 
-//      count2++;
-//      currentAngle= 0;
-//      previousAngle= 0;
-//    }
-//  }
+  //      count2++;
+  //      currentAngle= 0;
+  //      previousAngle= 0;
+  //    }
+  //  }
 
   //totalCount= (count1+count2)/2;
   println("totalcount = " +totalCount);
-  
+
   //////////////////// total health time
-  if(degree1>0){
-  
-    
-  
+  if (degree1>0) {
   }
-  
+
   /////////////////// rest time
 
   //pushMatrix();///////////////Push-up left

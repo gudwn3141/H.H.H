@@ -7,9 +7,8 @@ class Log_in {
   int idIndex;
   int pwIndex;
 
-  ArrayList<KSkeleton> skeletonArray;
-  KSkeleton skeleton;
-
+  String id_s;
+  String pw_s;
 
   PFont myFont;
   PImage myImage;
@@ -19,11 +18,13 @@ class Log_in {
   //PFont sky1;
   float Yspeed;
   float Accelerate;
-  KJoint joint;  
+
   int b;
   int c;
   int d;
   float e;
+
+  boolean login_register;
 
   char [] firstType= {'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'};
   char [] SecondType= {'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'};
@@ -39,11 +40,10 @@ class Log_in {
     running= loadImage("running1.jpg");
     Yspeed=0;
     Accelerate=0;
-    joint = null;
 
-    idIndex=255;
-    pwIndex=255;
-    skeletonArray = new ArrayList<KSkeleton>();
+    idIndex=250;
+    pwIndex=250;
+
     b=0;
     c=0;
     d=0;
@@ -53,9 +53,12 @@ class Log_in {
     pw = new StringBuffer();
     log_pw= 0; //log, pw choice
 
-
-
     numberver = false;
+
+    id_s = "";
+    pw_s = "";
+
+    login_register= true;
   }
 
 
@@ -100,7 +103,19 @@ class Log_in {
 
     fill(255, 120);
     textFont(myFont, 18);
-    text("Login", width/2, height/4+Yspeed/6);
+
+    text("[Login]", width-100, 40);//login
+    text("[Register]", width-100, 80);//register
+
+
+    if (login_register) {
+      text("Login", width/2, height/4+Yspeed/6);
+    } else {
+      text("Register", width/2, height/4+Yspeed/6);
+    }
+
+
+
 
     tint(184, 202, 250, 200);
 
@@ -112,13 +127,13 @@ class Log_in {
     ///////////////////////////////////////////////////////////////////////////////////////////////////key board
   }
 
-  void write(KJoint joint) {
-    float x=0;
-    float y = 0;
+  void write(float x, float y) {
+    //float x=0;
+    //float y = 0;
     String text = "";
     //if(handver == true){
-    x = joint.getX();
-    y = joint.getY();
+    //x = joint.getX();
+    //y = joint.getY();
     //handver = false;
     //}
     if (0<=x && x<60 && 150<=y && y<187.5) text = (numberver) ? "1" : "q";
@@ -161,11 +176,13 @@ class Log_in {
         if (id.length() != 0) {
           //stIndex-=10;
           id.deleteCharAt(id.length()-1);
+          id_s = id.toString();
           //text("",idIndex,80);
         }
-      } else if (log_pw==2) {
+      } else if (log_pw ==2) {
         if (pw.length() != 0 ) {
           pw.deleteCharAt(id.length()-1);
+          pw_s = pw.toString();
         }
         //text("",pwIndex+255,125);
       }
@@ -191,20 +208,20 @@ class Log_in {
         } else {
           fill(255, 0, 0);
           pw.append(text);
-          id_s = id.toString();
+          pw_s = pw.toString();
         }
       }
     }
-
-    textAlign(CORNER);//////////////////////////////////////////re try
-
-    text(id_s, idIndex, height/5.5-height/11+Yspeed/6);
-    text(pw_s, idIndex, height/5.5-height/23+Yspeed/6);
+    println("id = "+id);
+    //textAlign(CORNER);//////////////////////////////////////////re try
+    //text(id_s, idIndex, height/5.5-height/11+Yspeed/6);
+    //text(pw_s, idIndex, height/5.5-height/23+Yspeed/6);
   }
 
 
 
   void move() {
+
     Accelerate+=0.05;
     if (Accelerate>2) {
 
@@ -304,83 +321,134 @@ class Log_in {
             text(ThirdType[d], 27.5*2+2.5*2+60*d, 393+Yspeed);//good
           }
         }
+      }
+      //println("skeletonDepth.handclose"+skeletonDepth.handclose);
+      //println("skeletonDepth.handopen"+skeletonDepth.handopen);
+
+
+      //if (skeletonDepth.handclose && !skeletonDepth.handopen) { 
+
+      //  println("hand in");
+
+      //  float xpos = skeletonDepth.xpos;
+      //  float ypos = skeletonDepth.ypos;
+
+      //  println("xpos = "+xpos +" ypos = "+ypos);
+
+      //  if (!Click) {  //downmode ###############################recheck
+      //    if ((225< xpos && xpos <415) && (80< ypos+Yspeed && ypos <160+Yspeed)) {  // go up
+      //      Click=true;
+      //    } 
+
+
+      //    //login
+      //  } else {   //upmode
+      //    if (((0< ypos && ypos< 150) && ((0< xpos && xpos<180) || (420<xpos && xpos<600)))  
+      //      || ((180<xpos&&xpos<420) && (0<ypos && ypos<48))) {  //go down
+      //      Click = false;
+      //    } else if ((225< xpos && xpos <415) && (80< ypos && ypos <160)) {
+
+      //      if ((225< xpos && xpos <415) && (50< ypos && ypos <92)) log_pw=1;   //write id
+      //      else if ((225< xpos && xpos <415) && (96< ypos && ypos <135))  log_pw=2; //write pw
+      //      else log_pw=0;
+      //    } else {   //keyboard
+      //      write(xpos, ypos);
+      //    }
+      //  }
+      //if ((225< xpos && xpos <415) && (80< ypos+Yspeed && ypos <160+Yspeed)) {
 
 
 
-        if (Click==true) {
 
-          Yspeed=Yspeed-Accelerate;
-          //Accelerate++;
+      //  Click=true;
+      //  if ((225< xpos && xpos <415) && (50< ypos+Yspeed && ypos <92+Yspeed)) {
+      //    log_pw=1;
+      //    //write(xpos, ypos);
+      //  } else if ((225< xpos && xpos <415) && (96< ypos+Yspeed && ypos <135+Yspeed)) {
+      //    log_pw=2;
+      //    //write(xpos,ypos);
+      //  } else {
+      //    log_pw=0;
+      //  }
+      //} else if (Click==true && (0< ypos+Yspeed && ypos< 150+Yspeed) && ((0< xpos && xpos<180) || (420<xpos && xpos<600))) {
 
-          if (y<=152.5) {
+      //  Click=false;
+      //} else if (Click==true &&(180<xpos&&xpos<420) && (0<ypos+Yspeed && ypos<48+Yspeed)) {
+      //  Click=false;
+      //}
 
-            Yspeed=-150;
-            Accelerate=0;
-          }
-        } else if (Click==false) {
 
-          Yspeed=Yspeed+Accelerate;
-          //Accelerate++;
 
-          if (y>=415) {
-            //452.5
-            Yspeed=0;
-            Accelerate=0;
+
+
+      if (Click==true) {
+
+        Yspeed=Yspeed-Accelerate;
+        //Accelerate++;
+
+        if (y<=152.5) {
+
+          Yspeed=-150;
+          Accelerate=0;
+        }
+      } else if (Click==false) {
+
+        Yspeed=Yspeed+Accelerate;
+        //Accelerate++;
+
+        if (y>=415) {
+          //452.5
+          Yspeed=0;
+          Accelerate=0;
+        }
+      }
+    }
+    if (skeletonDepth.handclose && !skeletonDepth.handopen) { 
+
+      //println("hand in");
+
+      float xpos = skeletonDepth.xpos;
+      float ypos = skeletonDepth.ypos;
+      float xpos1 = map(xpos, 0, 514, 0, 600);
+      float ypos1 = map(ypos, 0, 424, 0, 300);
+      //println("xpos = "+xpos +" ypos = "+ypos);
+
+      if (!Click) {  //downmode ###############################recheck
+        if ((225< xpos1 && xpos1 <415) && (80< ypos1+Yspeed && ypos1 <160+Yspeed)) {  // go up
+          Click=true;
+        } 
+
+
+        if ((xpos1>500 && xpos1<width) && (ypos1>0 && ypos1<40)) {
+
+          login_register=true;//login
+        } else if ((xpos1>500 && xpos1<width) && (ypos1>40 && ypos1<80)) {
+
+          login_register=false;//register
+        }
+        if ((xpos1>width/2-width/5.6 && xpos1<width/2+width/5.6)&&(ypos1>height/4+Yspeed/6-height/50 && ypos1<height/4+Yspeed/6+height/50)) {//login range)
+          if (login_register) {
+
+            connect.login();
+          } else {
           }
         }
-joint = null;
-        skeletonArray = kinect.getSkeletonColorMap();
-        //println(skeletonArray.size());
-        for (int i=0; i<skeletonArray.size(); i++) {
-          //println("hand");
-          skeleton = (KSkeleton) skeletonArray.get(i);
-
-          if (skeleton.isTracked()) {
-            KJoint joints[] = skeleton.getJoints();
-
-            //draw different color for each hand state
-            //handState= joints[11].getState();
-            joint = joints[11];
-            //println(joint.getState());
-            println("ok");
-            //println(joints[11].getX());
+        //trif()
 
 
-            //Draw body
-            color col  = skeleton.getIndexColor();
-            fill(col);
-            stroke(col);
 
-            //drawHandState(joints[11]);
-          }
-        }
-        println(joint.getState());
+        //login
+      } else {   //upmode
+        if (((0< ypos1 && ypos1< 150) && ((0< xpos1 && xpos1<180) || (420<xpos1 && xpos1<600)))  
+          || ((180<xpos1&&xpos1<420) && (0<ypos1 && ypos1<48))) {  //go down
+          Click = false;
+        } else if ((225< xpos1 && xpos1 <415) && (80< ypos1 && ypos1 <160)) {
 
-        if (handstate.drawHandState(joint)) {
-          println("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
-          //KSkeleton skeleton= handstate.skeleton;
-          //KJoint joints[] = skeleton.getJoints();
-          float xpos= joints[11].getX(); 
-          float ypos= joints[11].getY();
-          println("xpos = "+xpos+" ypos = "+ypos);
-          if ((225< xpos && xpos <415) && (80< ypos+Yspeed && ypos <160+Yspeed)) {
-
-            Click=true;
-            if ((225< xpos && xpos <415) && (50< ypos+Yspeed && ypos <92+Yspeed)) {
-              log_pw=1;
-              write(joints[11]);
-            } else if ((225< xpos && xpos <415) && (96< ypos+Yspeed && ypos <135+Yspeed)) {
-              log_pw=2;
-              write(joints[11]);
-            } else {
-              log_pw=0;
-            }
-          } else if (Click==true && (0< ypos+Yspeed && ypos< 150+Yspeed) && ((0< xpos && xpos<180) || (420<xpos && xpos<600))) {
-
-            Click=false;
-          } else if (Click==true &&(180<xpos&&xpos<420) && (0<ypos+Yspeed && ypos<48+Yspeed)) {
-            Click=false;
-          }
+          if ((225< xpos1 && xpos1 <415) && (50< ypos1 && ypos1 <92)) log_pw=1;   //write id
+          else if ((225< xpos1 && xpos1 <415) && (96< ypos1 && ypos1 <135))  log_pw=2; //write pw
+          else log_pw=0;
+        } else {   //keyboard
+          write(xpos1, ypos1);
         }
       }
     }

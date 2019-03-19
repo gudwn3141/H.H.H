@@ -27,7 +27,7 @@ void draw() {
   background(0);
     image(kinect.getColorImage(), 0, 0);
 
-  //image(kinect.getDepthMaskImage(), 0, 0);
+  image(kinect.getDepthMaskImage(), 0, 0);
 
   //get the skeletons as an Arraylist of KSkeletons
   ArrayList<KSkeleton> skeletonArray =  kinect.getSkeletonDepthMap();
